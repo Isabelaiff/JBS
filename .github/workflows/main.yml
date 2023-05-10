@@ -1,0 +1,26 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ main ] # substitua "main" pelo nome da sua branch principal
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # substitua pela imagem que você quer utilizar
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # substitua pela versão do JDK que você quer utilizar
+      - name: Build
+        run: ./gradlew build # substitua pelo comando necessário para fazer o build do seu projeto
+      - name: Test
+        run: ./gradlew test # substitua pelo comando necessário para executar os testes do seu projeto
+      - name: Deploy
+        uses: appleboy/ssh-action@master # substitua pela ação necessária para fazer o deploy do seu projeto
+        with:
+          host: ${{ secrets.HOST }} # substitua pela variável de ambiente que contém o endereço do servidor
+          username: ${{ secrets.USERNAME }} # substitua pela variável de ambiente que contém o nome do usuário do servidor
+          password: ${{ secrets.PASSWORD }} # substitua pela variável de ambiente que contém a senha do usuário do servidor
+          script: |
+            # substitua pelos comandos necessários para fazer o deploy do seu projeto
